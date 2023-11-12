@@ -34,8 +34,21 @@ const handleDelete = (id) => {
 return (
     <div>
         <div>
-        <h2>All Your Delicious Recipes</h2>
+        <h1>All Your Delicious Recipes</h1>
         </div>
+        {
+            allRecipes.map((recipe) => (
+                <div key={recipe._id}>
+                    <h2>{recipe.name}</h2>
+                    <div>
+                        <Link to={`/viewRecipe/${recipe._id}`}>View</Link>
+                    </div>
+                    <div>
+                        <Link to={`/editRecipe/${recipe._id}`}>Edit</Link>
+                    </div>
+                </div>
+            ))
+        }
         <div>
             
         </div>
