@@ -5,7 +5,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 const DisplayAll = () => {
 const [allRecipes, setAllRecipes] = useState([])
 
-const navigate = useNavigate()
 const { id } = useParams()
 
 useEffect(() => {
