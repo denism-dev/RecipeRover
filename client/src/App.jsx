@@ -15,8 +15,8 @@ function App() {
           <Routes>
             <Route index element = {<DisplayAll/>}/>
             <Route path="/createRecipe" element = {<CreateRecipe/>}/>
-            <Route path="/editRecipe" element = {<EditRecipe/>}/>
-            <Route path="/viewRecipe" element = {<ViewRecipe/>}/>
+            <Route path="/editRecipe/:id" element = {<EditRecipe/>}/>
+            <Route path="/viewRecipe/:id" element = {<ViewRecipe/>}/>
           </Routes>
         </BrowserRouter>
     </div>

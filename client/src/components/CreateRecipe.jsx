@@ -6,8 +6,8 @@ const CreateRecipe = () => {
     const navigate = useNavigate()
     const [recipe, setRecipe] = useState({
         title: '',
-        ingredients: [{ _id: '', name: '' }],
-        method: [{ _id: '', step_number: '', step: '' }],
+        ingredients: [{ name: '' }],
+        method: [{ step_number: 1, step: '' }],
         images: null,
     })
 
@@ -17,35 +17,39 @@ const CreateRecipe = () => {
         setRecipe({ ...recipe, title: e.target.value })
     }
 
-    const handleIngredientChange = (ingredientId, value) => {
-        const newIngredients = recipe.ingredients.map(ingredient =>
-            ingredient._id === ingredientId ? { ...ingredient, name: value } : ingredient
+    const handleIngredientChange = (index, value) => {
+        const newIngredients = recipe.ingredients.map((ingredient, i) =>
+            i === index ? { ...ingredient, name: value } : ingredient
         )
         setRecipe({ ...recipe, ingredients: newIngredients });
     }
 
     const addIngredient = () => {
-        setRecipe({ ...recipe, ingredients: [...recipe.ingredients, { _id: '', name: '' }] })
+        setRecipe({ ...recipe, ingredients: [...recipe.ingredients, { name: '' }] })
     }
 
-    const removeIngredient = (ingredientId) => {
-        const newIngredients = recipe.ingredients.filter(ingredient => ingredient._id !== ingredientId);
+    const removeIngredient = (index) => {
+        const newIngredients = recipe.ingredients.filter((_, i) => i !== index);
         setRecipe({ ...recipe, ingredients: newIngredients })
     }
 
-    const handleMethodChange = (methodId, step) => {
-        const newMethod = recipe.method.map(item =>
-            item._id === methodId ? { ...item, step: step } : item
+    const handleMethodChange = (index, value) => {
+        const newMethod = recipe.method.map((item, i) =>
+            i === index ? { ...item, step: value } : item
         )
         setRecipe({ ...recipe, method: newMethod })
     }
 
     const addMethodStep = () => {
-        setRecipe({ ...recipe, method: [...recipe.method, { _id: '', step_number: recipe.method.length + 1, step: '' }] })
+        const nextStepNumber = recipe.method.length + 1;
+        setRecipe({
+            ...recipe,
+            method: [...recipe.method, { step_number: nextStepNumber, step: '' }]
+        })
     }
 
-    const removeMethodStep = (methodId) => {
-        const newMethod = recipe.method.filter(item => item._id !== methodId)
+    const removeMethodStep = (index) => {
+        const newMethod = recipe.method.filter((_, i) => i !== index)
         setRecipe({ ...recipe, method: newMethod })
     }
 
@@ -68,13 +72,20 @@ const CreateRecipe = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const submitRecipe = {
+            title: recipe.title,
+            ingredients: recipe.ingredients.map(ingredient => ({ name: ingredient.name })),
+            method: recipe.method.map(item => ({ step_number: item.step_number, step: item.step })),
+            images: recipe.images,
+        }
+
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/recipe', recipe)
-            console.log('Recipe created:', response.data);
+            const response = await axios.post('http://localhost:3000/api/v1/recipe', submitRecipe)
+            console.log('Recipe created:', response.data)
             navigate('/')
         } catch (error) {
             console.error('Error creating recipe:', error)
-            setErrors(error.response.data.error.errors)
+            setError(error.response.data)
         }
     }
 
@@ -88,28 +99,28 @@ const CreateRecipe = () => {
                 </div>
                 <div>
                     <label>Ingredients:</label>
-                    {recipe.ingredients.map((ingredient) => (
-                        <div key={ingredient._id || ingredient.name}>
+                    {recipe.ingredients.map((ingredient, index) => (
+                        <div key={index}>
                             <input
                                 type="text"
                                 value={ingredient.name}
-                                onChange={(e) => handleIngredientChange(ingredient._id, e.target.value)}
+                                onChange={(e) => handleIngredientChange(index, e.target.value)}
                             />
-                            <button type="button" onClick={() => removeIngredient(ingredient._id)}>Remove</button>
+                            <button type="button" onClick={() => removeIngredient(index)}>Remove</button>
                         </div>
                     ))}
                     <button type="button" onClick={addIngredient}>Add Ingredient</button>
                 </div>
                 <div>
                     <label>Method:</label>
-                    {recipe.method.map((step) => (
-                        <div key={step._id || step.step}>
+                    {recipe.method.map((step, index) => (
+                        <div key={index}>
                             <input
                                 type="text"
                                 value={step.step}
-                                onChange={(e) => handleMethodChange(step._id, e.target.value)}
+                                onChange={(e) => handleMethodChange(index, e.target.value)}
                             />
-                            <button type="button" onClick={() => removeMethodStep(step._id)}>Remove Step</button>
+                            <button type="button" onClick={() => removeMethodStep(index)}>Remove Step</button>
                         </div>
                     ))}
                     <button type="button" onClick={addMethodStep}>Add Step</button>
@@ -125,5 +136,3 @@ const CreateRecipe = () => {
 }
 
 export default CreateRecipe;
-
-// commit branch and maybe try a pull request to get denis's stuff too, and also finish the routes part on DisplayAll 
