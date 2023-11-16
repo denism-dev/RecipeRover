@@ -42,6 +42,15 @@ const formStyles = {
     marginAround: {
     margin: '5px',
     },
+    buttonDelete: {
+    backgroundColor: '#dc3545',
+    color: 'white',
+    border: 'none',
+    padding: '5px 15px',
+    margin: '0 5px',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    },
 };
 
 const EditRecipe = () => {
@@ -133,6 +142,17 @@ const EditRecipe = () => {
         }
     }
 
+    const handleDelete = (id) => {
+        axios.delete(`http://localhost:3000/api/v1/recipe/${id}`)
+        .then(res => {
+            setAllRecipes(allRecipes.filter(recipe => recipe._id !== id))
+            navigate("/")
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     return (
         <div style={formStyles.container}>
             <h1>Edit Your Recipe</h1>
@@ -180,6 +200,9 @@ const EditRecipe = () => {
                 <div style={formStyles.inputGroup}>
                     <label>Image:</label>
                     <input type="file" onChange={handleImageChange} />
+                </div>
+                <div style={formStyles.marginAround}>
+                <button onClick={() => {handleDelete(recipe._id); navigate("/");}}  style={formStyles.buttonDelete}>Delete</button>
                 </div>
                 <button style={formStyles.button} type="submit">Update Recipe</button>
             </form>

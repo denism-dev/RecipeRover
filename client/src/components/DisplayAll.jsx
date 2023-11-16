@@ -64,16 +64,6 @@ useEffect(() => {
     })
 }, [])
 
-const handleDelete = (id) => {
-    axios.delete(`http://localhost:3000/api/v1/recipe/${id}`)
-    .then(res => {
-        setAllRecipes(allRecipes.filter(recipe => recipe._id !== id))
-    })
-    .catch(err => {
-        console.log(err)
-    })
-}
-
 return (
     <div style={displayAllStyles.container}>
     <h1 style={displayAllStyles.header}>All Your Delicious Recipes</h1>
@@ -86,7 +76,7 @@ return (
         <div style={displayAllStyles.buttonGroup}>
             <Link to={`/viewRecipe/${recipe._id}`} style={displayAllStyles.button}>View</Link>
             <Link to={`/editRecipe/${recipe._id}`} style={displayAllStyles.button}>Edit</Link>
-            <button onClick={() => handleDelete(recipe._id)} style={displayAllStyles.buttonDelete}>Delete</button>
+            
         </div>
         </div>
     ))}
