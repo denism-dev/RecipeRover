@@ -4,12 +4,14 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start server": "nodemon src/app.js",
-    "watch": "nodemon --ext *"
+    "start": "nodemon server.js",
+    "watch": "nodemon --ext js,mjs,json"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -18,7 +20,9 @@
     "express-validator": "^7.0.1",
     "faker": "^5.5.3",
     "fs-extra": "^11.1.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.0.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "validator": "^13.11.0"
   }
 }

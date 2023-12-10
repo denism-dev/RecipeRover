@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const recipeController = require('../Controllers/RecipeController');
+const authenticate = require('../Middleware/Authenticate'); 
+
 
 // Router
 
@@ -14,11 +16,11 @@ router.get('/search', recipeController.searchRecipe);
 router.get('/fake', recipeController.fakeRecipeData);
 
 // API routes for recipes
-router.get('/', recipeController.getAllRecipes);
+router.get('/',authenticate, recipeController.getAllRecipes);
 router.get('/:id', recipeController.getRecipe);
-router.post('/', recipeController.createRecipe);
-router.patch('/:id', recipeController.updateRecipe);
-router.delete('/:id', recipeController.deleteRecipe);
+router.post('/', authenticate, recipeController.createRecipe);
+router.patch('/:id',authenticate, recipeController.updateRecipe);
+router.delete('/:id',authenticate, recipeController.deleteRecipe);
 router.delete('/', recipeController.deleteAllRecipes);
 
 module.exports = router;

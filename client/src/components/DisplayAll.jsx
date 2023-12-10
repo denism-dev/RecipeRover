@@ -55,7 +55,8 @@ const DisplayAll = () => {
 const [allRecipes, setAllRecipes] = useState([]);
 
 useEffect(() => {
-    axios.get('http://localhost:3000/api/v1/recipe')
+    const fetchRecipesUrl ='http://localhost:3000/api/v1/recipe'
+    axios.get(fetchRecipesUrl, {withCredentials: true})
     .then(res => {
         setAllRecipes(res.data)
     })

@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 const navStyles = {
     container: {
@@ -30,15 +32,29 @@ const navStyles = {
     }
 
 const Nav = () => {
+
+    const navigate = useNavigate();
+
+    const logoutUser = () => {
+    axios.post('http://localhost:3000/api/v1/users/logoutUser', {}, { withCredentials: true })
+        .then(() => {
+        navigate('/login')
+        })
+        .catch((err) => {
+        console.error(err)
+        })
+    }
 return (
     <div style={navStyles.container}>
         <h1  style={navStyles.title}>Recipe Rover</h1>
         <div style={navStyles.navLinks}>
-        <Link to={"/"} style={navStyles.link}>My Recipes</Link>
+        <Link to={"/displayAll"} style={navStyles.link}>My Recipes</Link>
         <Link to={"/createRecipe"} style={navStyles.link}>Create A Recipe</Link>
+        <button onClick={logoutUser} >Logout</button>
         </div>
     </div>
 )
 }
+
 
 export default Nav
