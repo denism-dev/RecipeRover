@@ -122,9 +122,9 @@ const CreateRecipe = () => {
         }
 
         try {
-            const response = await axios.post('http://localhost:3000/api/v1/recipe', submitRecipe)
+            const response = await axios.post('http://localhost:3000/api/v1/recipe', submitRecipe, { withCredentials: true })
             console.log('Recipe created:', response.data)
-            navigate('/')
+            navigate('/displayAll')
         } catch (error) {
             console.error('Error creating recipe:', error)
             setError(error.response.data)

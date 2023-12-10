@@ -26,6 +26,10 @@ const RecipeSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User' 
+    }
 })
 
 function arrayMinLength(arr) {

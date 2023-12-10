@@ -67,7 +67,7 @@ const EditRecipe = () => {
     const [error, setError] = useState({});
 
     useEffect(() => {
-        axios.get(`http://localhost:3000/api/v1/recipe/${id}`)
+        axios.get(`http://localhost:3000/api/v1/recipe/${id}`, { withCredentials: true })
             .then(res => {
                 if (res.data) {
                     setRecipe(res.data)
@@ -120,7 +120,7 @@ const EditRecipe = () => {
             const formData = new FormData()
             formData.append('file', file)
 
-            axios.post('http://localhost:3000/api/v1/recipe/temp/upload', formData)
+            axios.post('http://localhost:3000/api/v1/recipe/temp/upload', formData, { withCredentials: true })
                 .then(response => {
                     setRecipe({ ...recipe, images: response.data.imagePath })
                 })
@@ -133,9 +133,9 @@ const EditRecipe = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const response = await axios.patch(`http://localhost:3000/api/v1/recipe/${id}`, recipe)
+            const response = await axios.patch(`http://localhost:3000/api/v1/recipe/${id}`, recipe, { withCredentials: true })
             console.log('Recipe updated:', response.data)
-            navigate('/')
+            navigate('/displayAll')
         } catch (error) {
             console.error('Error updating recipe:', error)
             setError(error.response.data.error.errors)
@@ -143,10 +143,10 @@ const EditRecipe = () => {
     }
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:3000/api/v1/recipe/${id}`)
+        axios.delete(`http://localhost:3000/api/v1/recipe/${id}`, { withCredentials: true })
         .then(res => {
             setAllRecipes(allRecipes.filter(recipe => recipe._id !== id))
-            navigate("/")
+            navigate("/displayAll")
         })
         .catch(err => {
             console.log(err)
@@ -202,7 +202,7 @@ const EditRecipe = () => {
                     <input type="file" onChange={handleImageChange} />
                 </div>
                 <div style={formStyles.marginAround}>
-                <button onClick={() => {handleDelete(recipe._id); navigate("/");}}  style={formStyles.buttonDelete}>Delete</button>
+                <button onClick={() => {handleDelete(recipe._id); navigate("/displayAll");}}  style={formStyles.buttonDelete}>Delete</button>
                 </div>
                 <button style={formStyles.button} type="submit">Update Recipe</button>
             </form>

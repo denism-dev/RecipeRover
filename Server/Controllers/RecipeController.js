@@ -5,7 +5,9 @@ const fake = require('../Models/RecipeFaker');
 // Create recipe
 const createRecipe = async (req, res) => {
     try {
-        const recipeData = req.body;
+        const recipeData = {
+            ...req.body, 
+            createdBy: req.userId}
         const recipe = new Recipe(recipeData);
         const savedRecipe = await recipe.save();
         res.status(201).json(savedRecipe);
@@ -43,7 +45,7 @@ const searchRecipe = async (req, res) => {
 // Fetch all recipes
 const getAllRecipes = async (req, res) => {
     try {
-        const recipes = await Recipe.find();
+        const recipes = await Recipe.find({ createdBy: req.userId});
         res.json(recipes);
     } catch (error) {
         res.status(400).json({ error: error.message });
